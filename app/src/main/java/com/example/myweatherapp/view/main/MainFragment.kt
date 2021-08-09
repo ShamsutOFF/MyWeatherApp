@@ -9,6 +9,8 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.myweatherapp.R
 import com.example.myweatherapp.databinding.FragmentMainBinding
+import com.example.myweatherapp.model.Weather
+import com.example.myweatherapp.view.details.DetailsFragment
 import com.example.myweatherapp.viewmodel.AppState
 import com.example.myweatherapp.viewmodel.MainViewModel
 import com.google.android.material.snackbar.Snackbar
@@ -18,7 +20,21 @@ class MainFragment : Fragment() {
     private var _binding: FragmentMainBinding? = null
     private val binding get() = _binding!!
     private lateinit var viewModel: MainViewModel
-    private val adapter = MainFragmentAdapter()
+
+    private val adapter = MainFragmentAdapter(object : OnItemViewClickListener {
+        override fun onItemViewClick(weather: Weather) {
+            val manager = activity?.supportFragmentManager
+            if (manager != null) {
+                val bundle = Bundle()
+                bundle.putParcelable(DetailsFragment.BUNDLE_EXTRA, weather)
+                manager.beginTransaction()
+                    .add(R.id.container, DetailsFragment.newInstance(bundle))
+                    .addToBackStack("")
+                    .commitAllowingStateLoss()
+            }
+        }
+    })
+
     private var isDataSetRus: Boolean = true
 
     override fun onCreateView(
@@ -76,7 +92,16 @@ class MainFragment : Fragment() {
         }
     }
 
+    interface OnItemViewClickListener {
+        fun onItemViewClick(weather: Weather)
+    }
+
     companion object {
         fun newInstance() = MainFragment()
+    }
+
+    override fun onDestroy() {
+        adapter.removeListener()
+        super.onDestroy()
     }
 }
