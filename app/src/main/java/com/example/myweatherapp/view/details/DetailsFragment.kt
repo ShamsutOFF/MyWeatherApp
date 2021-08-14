@@ -22,8 +22,7 @@ class DetailsFragment : Fragment() {
     private val binding get() = _binding!!
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         _binding = FragmentDetailsBinding.inflate(inflater, container, false)
         return binding.root
@@ -42,42 +41,7 @@ class DetailsFragment : Fragment() {
             binding.temperatureValue.text = weather.temperature.toString()
             binding.feelsLikeValue.text = weather.feelsLike.toString()
         }
-//        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
-//        viewModel.getLiveData().observe(viewLifecycleOwner, Observer { renderData(it)
-//        })
-//        viewModel.getWeatherFromLocalSource()
     }
-
-//    private fun renderData(appState: AppState) {
-//        when (appState) {
-//            is AppState.Success -> {
-//                val weatherData = appState.weatherData
-//                binding.loadingLayout.visibility = View.GONE
-//                setData(weatherData)
-//                Snackbar.make(binding.mainView, "Success", Snackbar.LENGTH_LONG).show()
-//            }
-//            is AppState.Loading -> {
-//                binding.loadingLayout.visibility = View.VISIBLE
-//            }
-//            is AppState.Error -> {
-//                binding.loadingLayout.visibility = View.GONE
-//                Snackbar.make(binding.mainView, "Error", Snackbar.LENGTH_INDEFINITE)
-//                    .setAction("Reload") { viewModel.getWeatherFromLocalSource() }
-//                    .show()
-//            }
-//        }
-//    }
-//
-//    private fun setData(weatherData: Weather) {
-//        binding.cityName.text = weatherData.city.city
-//        binding.cityCoordinates.text = String.format(
-//            getString(R.string.city_coordinates),
-//            weatherData.city.lat.toString(),
-//            weatherData.city.lon.toString()
-//        )
-//        binding.temperatureValue.text = weatherData.temperature.toString()
-//        binding.feelsLikeLabel.text = weatherData.feelsLike.toString()
-//    }
 
     override fun onDestroy() {
         super.onDestroy()
