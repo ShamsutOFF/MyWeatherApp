@@ -24,12 +24,15 @@ class WeatherLoader(
             val uri =
                 URL("https://api.weather.yandex.ru/v2/forecast?lat=${lat}&lon=${lon}")
             val handler = Handler()
-            Thread(Runnable {
+            Thread {
                 lateinit var urlConnection: HttpsURLConnection
                 try {
                     urlConnection = uri.openConnection() as HttpsURLConnection
                     urlConnection.requestMethod = "GET"
-                    urlConnection.addRequestProperty("X-Yandex-API-Key",BuildConfig.WEATHER_API_KEY)
+                    urlConnection.addRequestProperty(
+                        "X-Yandex-API-Key",
+                        BuildConfig.WEATHER_API_KEY
+                    )
                     urlConnection.readTimeout = 10_000
                     val bufferedReader =
                         BufferedReader(InputStreamReader(urlConnection.inputStream))
@@ -44,7 +47,7 @@ class WeatherLoader(
                 } finally {
                     urlConnection.disconnect()
                 }
-            }).start()
+            }.start()
         } catch (e: MalformedURLException) {
             Log.e("", "Fail URI: ", e)
             e.printStackTrace()
@@ -54,7 +57,8 @@ class WeatherLoader(
 
     @RequiresApi(Build.VERSION_CODES.N)
     private fun getLines (reader: BufferedReader) : String{
-        return reader.lines().collect(Collectors.joining("\n"))
+        var string:String = reader.lines().collect(Collectors.joining("\n"))
+        return string
     }
 
     interface WeatherLoaderListener {
